@@ -1,0 +1,85 @@
+@startuml
+' General settings for rounded corners, shadows, and background color
+skinparam roundcorner 15
+skinparam shadowing true
+skinparam backgroundColor #f5f5f5
+
+' Color-coded styles for different types of classes
+skinparam class {
+    BackgroundColor #E8F5E9
+    ArrowColor #1E88E5
+    BorderColor #388E3C
+    FontColor #1B5E20
+}
+
+skinparam package {
+    BackgroundColor #FFF3E0
+    BorderColor #FB8C00
+}
+
+' Grouping related classes within packages
+package "User Management" #FFEBEE {
+    class User <<User>> #FFCDD2 {
+        - user_id : int
+        - username : string
+        - password : string
+        - role : string
+        - github_id : string
+        + register() : void
+        + login() : User
+    }
+
+    class ActivityLog <<Log>> #FFE0B2 {
+        - log_id : int
+        - student_id : int
+        - project_id : int
+        - activity : string
+        - timestamp : datetime
+        + log_activity(activity : string) : void
+    }
+    
+    note right of User
+        The `User` class handles authentication and 
+        registration with GitHub integration.
+    end note
+}
+
+package "Project Management" #FFFDE7 {
+    class Project <<Project>> #FFF59D {
+        - project_id : int
+        - project_name : string
+        - instructor_id : int
+        + create_project() : void
+        + assign_student(student : User) : void
+    }
+
+    class Milestone <<Milestone>> #FFF9C4 {
+        - milestone_id : int
+        - project_id : int
+        - milestone_name : string
+        - due_date : date
+        - status : string
+        + add_milestone() : void
+        + update_status(status : string) : void
+    }
+
+    class StudentProject <<Relationship>> #DCEDC8 {
+        - student_id : int
+        - project_id : int
+    }
+    
+    note right of Project
+        The `Project` class is the main entity representing
+        a project, containing milestones and student assignments.
+    end note
+}
+
+' Relationships between classes
+User "1" --> "M" StudentProject : "assigned to"
+Project "1" --> "M" Milestone : "contains"
+Project "1" --> "M" StudentProject : "linked with"
+User "1" --> "M" ActivityLog : "logs activity"
+Milestone "1" --> "1" Project : "belongs to"
+ActivityLog "1" --> "1" Project : "related to"
+
+@enduml
