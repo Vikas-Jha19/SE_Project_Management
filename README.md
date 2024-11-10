@@ -24,7 +24,7 @@ This API provides endpoints for managing projects, including user registration a
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Vikas-Jha19/SE_Project_Management.git
    ```
 2. Navigate to the project directory:
    ```bash
